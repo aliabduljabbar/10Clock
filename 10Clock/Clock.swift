@@ -363,7 +363,7 @@ open class TenClock : UIControl{
         var fiveMinIncrements = Int( ((tailAngle - headAngle) / twoPi) * 12 /*hrs*/ * 12 /*5min increments*/)
         if fiveMinIncrements < 0 {
             print("tenClock:Err: is negative")
-            fiveMinIncrements += (24 * (60/5))
+            //fiveMinIncrements += (24 * (60/5))
         }
         
         titleTextLayer.string = "\(fiveMinIncrements / 12)hr \((fiveMinIncrements % 12) * 5)min"
@@ -488,6 +488,14 @@ open class TenClock : UIControl{
                 let computedP = CGPoint(x: p.x, y: self.layer.bounds.height - p.y)
                 let v1 = CGVector(from: c, to: computedP)
                 let v2 = CGVector(angle:g( p ))
+                // End should not pass end of day 12:00am
+                if v1.dx > 0 && v1.dy > 0 && v2.dx < 0 && layer == self.headLayer{
+                    return
+                }
+                // Start should not be earlier than start of day 12:00am
+                if v1.dx < 0 && v1.dy > 0 && v2.dx < 0 && layer == self.tailLayer{
+                    return
+                }
 
                 s(clockDescretization(CGVector.signedTheta(v1, vec2: v2)))
                 self.update()
