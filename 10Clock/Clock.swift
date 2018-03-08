@@ -493,7 +493,7 @@ open class TenClock : UIControl{
                     return
                 }
                 // Start should not be earlier than start of day 12:00am
-                if v1.dx < 0 && v1.dy > 0 && v2.dx < 0 && layer == self.tailLayer{
+                if v1.dx < 0 && v1.dy > 0 && v2.dx > 0  && layer == self.tailLayer{
                     return
                 }
 
